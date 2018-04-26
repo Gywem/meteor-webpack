@@ -37,7 +37,7 @@ Plugin.registerCompiler({
             })
 
             if (process.env.NODE_ENV !== 'production' && webpackConfig.devServer) {
-                compilerCache[targetPlatform] = null;
+                compilerCacheHashMap[targetPlatform] = null;
                 return;
             }
 
@@ -59,8 +59,8 @@ Plugin.registerCompiler({
                 webpackConfig.mode = process.NODE_ENV == 'production' ? 'production' : 'development';
                 webpackConfig.externals = webpackConfig.externals || [];
                 webpackConfig.externals.push(resolveExternals);
-                compilerCache[targetPlatform] = webpack(webpackConfig);
-                compilerCache[targetPlatform].outputFileSystem = new MemoryFS();
+                compilerCacheHashMap[targetPlatform] = webpack(webpackConfig);
+                compilerCacheHashMap[targetPlatform].outputFileSystem = new MemoryFS();
             }
         },
         processFilesForTarget(inputFiles) {
