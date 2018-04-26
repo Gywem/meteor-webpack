@@ -1,9 +1,11 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const nodeExternals = require('webpack-node-externals');
+const path = require('path');
 
 const clientConfig = {
     entry: [
-        'react-hot-loader/patch',
+      'react-hot-loader/patch',
       './client/main.jsx'
     ],
     module: {
@@ -17,7 +19,7 @@ const clientConfig = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: './client/main.html'
+          template: './client/main.html'
         }),
         new webpack.HotModuleReplacementPlugin()
     ],
@@ -25,9 +27,9 @@ const clientConfig = {
       extensions: ['*', '.js', '.jsx']
     },
     output: {
-      path: __dirname + '/dist',
+      path: path.resolve(__dirname, 'dist'),
       publicPath: '/',
-      filename: 'bundle.js'
+      filename: 'bundle.client.js'
     },
     devServer: {
       contentBase: './dist',
@@ -39,7 +41,15 @@ const serverConfig = {
     entry: [
         './server/main.js'
     ],
-    target: 'node'
+    output: {
+      path: path.resolve(__dirname, '/dist'),
+      filename: 'bundle.server.js'
+    },
+    target: 'node',
+    externals: [nodeExternals()],
+    devServer: {
+      hot: true
+    }
 };
 
 module.exports = [clientConfig, serverConfig];
